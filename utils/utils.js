@@ -16,11 +16,11 @@ console.log(
 
 // Create a test account or replace with real credentials.
 
-export const sendMail = async (email,message) => {
+export const sendMail = async (email,message,subject) => {
   const transporter = createTransport({
     host: SMTP_HOST,
     port: SMTP_PORT,
-    secure: false, // true for 465, false for other ports
+    // secure: false, // true for 465, false for other ports
     auth: {
       user: SMTP_USER,
       pass: SMTP_PASS,
@@ -35,17 +35,11 @@ export const sendMail = async (email,message) => {
     const info = await transporter.sendMail({
       from: "Saqlain Mujtaba   ",
       to: `${email}`,
-      subject: "Saqlain Mujtaba ✔",
+      subject: `${subject}`,
       text: "Hello world?", // plain‑text body
-      html: `<b>${message? " Thank you for your message  "+ message +"i recieved it" :"Thank you for contacting Saqlain mujtaba. I will contact you soon"}</b>`, // HTML body
+      html: `<b>${message? " Thank you for your message <br>  "+ message +" <br> I recieved it" :"Thank you for contacting Saqlain mujtaba. I will contact you soon"}</b>`, // HTML body
     });
-    // const infome = await transporter.sendMail({
-    //   from: "Saqlain Mujtaba   ",
-    //   to: `hafizsaqlainmujtaba@gmail.com`,
-    //   subject: "Saqlain Mujtaba ✔",
-    //   text: "Hello world?", // plain‑text body
-    //   html: `<b>${message? " Thank you for your message <br> "+ message +"<br>I recieved it" :"Thank you for contacting Saqlain mujtaba. I will contact you soon"}</b>`, // HTML body
-    // });
+ 
 
     console.log(`"Message sent: to "${email}`, info.messageId);
     // console.log(`"Message sent: to me" successfully`, infome.messageId);

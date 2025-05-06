@@ -12,12 +12,13 @@ router.route("/").get((req,res)=>{
 })
 
 router.route("/send").post((req,res)=>{
-    const { email, message } = req.body;
-      sendMail(email, message);
+    const { email, message ,subject} = req.body;
+      sendMail(email, message,subject);
       res.status(200).json({
         success: true,
         message: "message send",
         email,
+        subject
       });
 })
 
