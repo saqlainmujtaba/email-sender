@@ -1,0 +1,19 @@
+{
+  "name": "sendemail",
+  "version": "1.0.0",
+  "description": "this is backend code for sending email",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "saqlainmujtaba",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "nodemailer": "^7.0.2",
+    "nodemon": "^3.1.10"
+  }
+}
