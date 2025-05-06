@@ -1,5 +1,9 @@
 import { configDotenv } from "dotenv";
 import { createTransport } from "nodemailer";
+import {
+    generateAdminTemplate,
+    generateClientTemplate
+} from "../template/useremail.js";
 
 configDotenv();
 
@@ -9,14 +13,15 @@ const SMTP_HOST = process.env.SMTP_HOST;
 const SMTP_PORT = process.env.SMTP_PORT;
 const SMTP_USER = process.env.SMTP_USER;
 const SMTP_PASS = process.env.SMTP_PASS;
+const myemail = process.env.myemail;
 
 console.log(
-    `SMTP_HOST: ${SMTP_HOST}, SMTP_PORT: ${SMTP_PORT}, SMTP_USER: ${SMTP_USER}`
+  `SMTP_HOST: ${SMTP_HOST}, SMTP_PORT: ${SMTP_PORT}, SMTP_USER: ${SMTP_USER}`
 );
 
 // Create a test account or replace with real credentials.
 
-export const sendMail = async (email,message,subject) => {
+export const sendMail = async (email, message, subject) => {
   const transporter = createTransport({
     host: SMTP_HOST,
     port: SMTP_PORT,
@@ -37,11 +42,33 @@ export const sendMail = async (email,message,subject) => {
       to: `${email}`,
       subject: `${subject}`,
       text: "Hello world?", // plain‑text body
-      html: `<b>${message? " Thank you for your message <br>  "+ message +" <br> I recieved it" :"Thank you for contacting Saqlain mujtaba. I will contact you soon"}</b>`, // HTML body
+      html: generateClientTemplate(email), // HTML body
     });
- 
+    const tome = await transporter.sendMail({
+      from: "Saqlain Mujtaba   ",
+      to: `${myemail}`,
+      subject: `${subject}`,
+      text: "Hello world?", // plain‑text body
+      html: generateAdminTemplate(subject, email, message), // HTML body
+    });
+
+    // const info = await transporter.sendMail({
+    //   from: "Saqlain Mujtaba   ",
+    //   to: `${email}`,
+    //   subject: `${subject}`,
+    //   text: "Hello world?", // plain‑text body
+    //   html: `<b>${message? " Thank you for your message <br>  "+ message +" <br> I recieved it" :"Thank you for contacting Saqlain mujtaba. I will contact you soon"}</b>`, // HTML body
+    // });
+
+    // const tome = await transporter.sendMail({
+    //   from: "Saqlain Mujtaba   ",
+    //   to: `${myemail}`,
+    //   subject: `${subject}`,
+    //   text: "Hello world?", // plain‑text body
+    //   html: `<b>${message? " Thank you for your message <br>  "+ message +" <br> I recieved it" :"Thank you for contacting Saqlain mujtaba. I will contact you soon"}</b>`, // HTML body
+    // });
 
     console.log(`"Message sent: to "${email}`, info.messageId);
-    // console.log(`"Message sent: to me" successfully`, infome.messageId);
+    console.log(`"Message sent: to me" successfully`, tome.messageId);
   })();
 };
